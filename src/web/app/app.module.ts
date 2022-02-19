@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {environment} from "../environments/environment";
+import {HttpClientModule} from "@angular/common/http";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -30,7 +31,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    HttpClientModule
   ],
   providers: [{
     provide: APP_INITIALIZER,

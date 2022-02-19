@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {KeycloakProfile} from "keycloak-js";
 import {KeycloakService} from "keycloak-angular";
+import {TestService} from "./TestService";
 
 @Component({
   selector: 'app-root',
@@ -11,8 +12,9 @@ export class AppComponent implements OnInit{
   title = 'web';
   public isLoggedIn = false;
   public userProfile: KeycloakProfile | null = null;
+  public testMessage: string = '';
 
-  constructor(private readonly keyalockService: KeycloakService){
+  constructor(private readonly keyalockService: KeycloakService, private testService: TestService){
 
   }
 
@@ -24,6 +26,10 @@ export class AppComponent implements OnInit{
     console.log(this.isLoggedIn);
     if(this.isLoggedIn){
       this.userProfile = await this.keyalockService.loadUserProfile();
+      this.testService.getTestMessageJson().subscribe((res)=>{
+        console.log(res);
+        this.testMessage = res.body!.response;
+      })
     }else{
       this.login();
     }
