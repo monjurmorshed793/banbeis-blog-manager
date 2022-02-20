@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {environment} from "../environments/environment";
 import {HttpClientModule} from "@angular/common/http";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -32,7 +33,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: APP_INITIALIZER,

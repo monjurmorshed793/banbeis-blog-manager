@@ -34,6 +34,7 @@
               "src/web/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/web/styles.sass"
             ],
             "scripts": []
@@ -102,6 +103,7 @@
               "src/web/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/web/styles.sass"
             ],
             "scripts": []
