@@ -11,6 +11,8 @@ import {RouterModule} from "@angular/router";
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { MaterialModule } from './shared/material.module';
+import {PanelMenuModule} from "primeng/panelmenu";
+import {MenuModule} from "primeng/menu";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -42,7 +44,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HttpClientModule,
     BrowserAnimationsModule,
     RouterModule,
-    MaterialModule
+    MaterialModule,
+    PanelMenuModule,
+    MenuModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
