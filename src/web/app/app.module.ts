@@ -6,6 +6,13 @@ import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {environment} from "../environments/environment";
 import {HttpClientModule} from "@angular/common/http";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {RouterModule} from "@angular/router";
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { MaterialModule } from './shared/material.module';
+import {PanelMenuModule} from "primeng/panelmenu";
+import {MenuModule} from "primeng/menu";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -26,13 +33,20 @@ function initializeKeycloak(keycloak: KeycloakService) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ToolbarComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    RouterModule,
+    MaterialModule,
+    PanelMenuModule,
+    MenuModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
