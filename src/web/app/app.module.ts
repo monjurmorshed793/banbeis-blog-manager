@@ -13,6 +13,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { MaterialModule } from './shared/material.module';
 import {PanelMenuModule} from "primeng/panelmenu";
 import {MenuModule} from "primeng/menu";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -46,7 +47,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     RouterModule,
     MaterialModule,
     PanelMenuModule,
-    MenuModule
+    MenuModule,
+    NgbModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
