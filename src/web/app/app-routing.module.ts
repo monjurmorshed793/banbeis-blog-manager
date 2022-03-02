@@ -8,9 +8,13 @@ const routes: Routes = [
     loadChildren: ()=> import('./dashboard/dashboard.module').then(m=> m.DashboardModule)
   },
   {
+    path: 'navigation',
+    loadChildren: ()=> import('./navigation/navigation.module').then(m=> m.NavigationModule)
+  },
+  {
     path: '**',
     redirectTo: 'dashboard'
-  }
+  },
 ];
 
 @NgModule({

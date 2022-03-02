@@ -53,7 +53,8 @@ export class AppComponent implements OnInit{
     this.items = [
       {
         label: 'Navigation',
-        icon: 'pi pi link'
+        icon: 'pi pi-link',
+        routerLink: ['/navigation']
       },
       {
         label: 'File',
