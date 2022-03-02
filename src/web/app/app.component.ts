@@ -29,6 +29,7 @@ export class AppComponent implements OnInit{
 
   async ngOnInit() {
 
+
     this.breakPointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((state: BreakpointState)=>{
@@ -50,6 +51,10 @@ export class AppComponent implements OnInit{
 
 
     this.items = [
+      {
+        label: 'Navigation',
+        icon: 'pi pi link'
+      },
       {
         label: 'File',
         icon: 'pi pi-pw pi-file',

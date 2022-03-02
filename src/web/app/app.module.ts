@@ -14,6 +14,7 @@ import { MaterialModule } from './shared/material.module';
 import {PanelMenuModule} from "primeng/panelmenu";
 import {MenuModule} from "primeng/menu";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {BanbeisSharedServicesModule} from "../../../../banbeis-shared-service/dist/banbeis-shared-services";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -48,7 +49,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MaterialModule,
     PanelMenuModule,
     MenuModule,
-    NgbModule
+    NgbModule,
+    BanbeisSharedServicesModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
