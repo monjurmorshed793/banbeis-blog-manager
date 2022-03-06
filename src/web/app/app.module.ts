@@ -50,7 +50,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     PanelMenuModule,
     MenuModule,
     NgbModule,
-    BanbeisSharedServicesModule
+    BanbeisSharedServicesModule.forRoot(environment.apiUrl)
   ],
   providers: [{
     provide: APP_INITIALIZER,
