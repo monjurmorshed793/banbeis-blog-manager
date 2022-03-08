@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   keycloakUrl: 'http://localhost:9080',
-  apiUrl: 'http://localhost:8080'
+  apiUrl: 'http://localhost:8081'
 };
 
 /*

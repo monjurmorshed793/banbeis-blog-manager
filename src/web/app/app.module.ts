@@ -15,6 +15,8 @@ import {PanelMenuModule} from "primeng/panelmenu";
 import {MenuModule} from "primeng/menu";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {BanbeisSharedServicesModule} from "banbeis-shared-services";
+import {MessageService} from "primeng/api";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -49,6 +51,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     PanelMenuModule,
     MenuModule,
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
     BanbeisSharedServicesModule.forRoot(environment.apiUrl),
   ],
   providers: [{
@@ -56,8 +60,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     useFactory: initializeKeycloak,
     multi: true,
     deps: [KeycloakService]
-
-  }],
+  }, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

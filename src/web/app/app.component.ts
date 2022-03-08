@@ -54,7 +54,11 @@ export class AppComponent implements OnInit{
       {
         label: 'Navigation',
         icon: 'pi pi-link',
-        routerLink: ['/navigation']
+        routerLink: ['/navigation'],
+        routerLinkActiveOptions: {
+          exact: true
+        },
+        expanded: this.checkActiveState('/navigation')
       },
       {
         label: 'File',
@@ -131,7 +135,14 @@ export class AppComponent implements OnInit{
     ];
   }
 
-
+  checkActiveState(givenLink: string) {
+    console.log(this.router.url);
+    if (this.router.url.indexOf(givenLink) === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   public login(){
     this.keyalockService.login();
   }

@@ -1,24 +1,38 @@
-<div class="card">
-  <div class="card-header" style="font-size: large;">
-    Navigation
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-12 d-flex flex-row justify-content-end" >
-        <button class="btn btn-primary">Add</button>
-      </div>
-      <div class="col-md-12">
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Label</th>
-            <th>Route</th>
-            <th>Icon</th>
-            <th>Child</th>
-          </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+<p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
+<p-toast position="top-left"></p-toast>
+<p-card>
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <!--Empty and it's intentional-->
+    </ng-template>
+    <ng-template pTemplate="right">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" [routerLink]="['/navigation/new']"></button>
+    </ng-template>
+  </p-toolbar>
+  <p-table responsiveLayout="scroll" [value]="navigations" dataKey="id">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem"></th>
+        <th>Label</th>
+        <th>Route</th>
+        <th>Icon</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-navigation let-expanded="expanded">
+      <tr>
+        <td>
+          <button type="button" pButton pRipple [pRowToggler]="navigation" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+        </td>
+        <td>{{navigation.label}}</td>
+        <td>{{navigation.route}}</td>
+        <td><i class="{{navigation.icon}}"></i></td>
+        <td>
+          <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded"></button>
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
