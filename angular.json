@@ -23,6 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "target/classes/META-INF/resources",
             "index": "src/web/index.html",
             "main": "src/web/main.ts",

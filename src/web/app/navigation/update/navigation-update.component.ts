@@ -16,6 +16,7 @@ export class NavigationUpdateComponent implements OnInit {
     sequence: [null],
     label: [null, Validators.required],
     route: [null, [Validators.required]],
+    icon: [null, [Validators.required]],
     roles: [null, [Validators.required]]
   });
 

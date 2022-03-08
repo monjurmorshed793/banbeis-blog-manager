@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
-import {INavigation, SecuredNavigationService} from "banbeis-shared-services";
+import {INavigation, NavigationService} from "banbeis-shared-services";
 
 @Component({
   selector: 'app-navigation',
@@ -12,7 +12,7 @@ export class NavigationComponent implements OnInit {
   public breadcrumbItems: MenuItem[] = [];
   public navigations: INavigation[] = [];
 
-  constructor(private navigationService: SecuredNavigationService, private messageService: MessageService) { }
+  constructor(private navigationService: NavigationService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.breadcrumbItems = [
