@@ -6,6 +6,7 @@
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationLabel">Navigation Label</label>
             <input id="navigationLabel" formControlName="label" type="text" pInputText class="inputfield w-full">
+            <small class="p-error block">Found error</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationRoute">Navigation Route</label>
@@ -19,8 +20,50 @@
             <label for="roles">Roles</label>
             <input id="roles" formControlName="roles" type="text" pInputText class="inputfield w-full">
           </div>
-          <div class="col-12">
+          <div class="col-12" formArrayName="submenus">
+            <p-toolbar styleClass="mb-4">
+              <ng-template pTemplate="left">
+                <!--Empty and it's intentional-->
+              </ng-template>
+              <ng-template pTemplate="right">
+                <button pButton pRipple label="Add Submenu" icon="pi pi-plus" class="p-button-success mr-2" (click)="addSubmenu()"></button>
+              </ng-template>
+            </p-toolbar>
+              <p-table [value]="submenus.controls" editMode="row" responsiveLayout="scroll" >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width:3rem"></th>
+                      <th>Label</th>
+                      <th>Route</th>
+                      <th>Icon</th>
+                      <th>Roles</th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+                <ng-template pTemplate="body"  let-submenu  let-index="rowIndex">
+                  <tr [pEditableRow]="submenu" [pReorderableRow]="index">
+                    <td>
+                      <span class="pi pi-bars" [pReorderableRowHandle]="index"></span>
+                    </td>
+                    <td>
+                      <input pInputText type="text" formControlName="label" [value]="submenu.value.label">
 
+                    </td>
+                    <td>
+                      <input pInputText type="text" formControlName="route" [value]="submenu.value.route">
+                    </td>
+                    <td>
+                      <input pInputText type="text" formControlName="icon" [value]="submenu.value.icon">
+                    </td>
+                    <td>
+                      <input pInputText type="text" formControlName="roles" [value]="submenu.value.roles">
+                    </td>
+                    <td>
+                      <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteSubmenu(index)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
           </div>
         </div>
     </form>

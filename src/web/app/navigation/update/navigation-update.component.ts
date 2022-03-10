@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {ActivatedRoute} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+
+function navigationLinkChecker(c: AbstractControl): {[key: string]: boolean} | null{
+  if(c.value!==null && c.value.charAt(0)==='/'){
+    return {route: true};
+  }
+  return null;
+}
 
 @Component({
   selector: 'app-navigation-update',
@@ -15,11 +22,15 @@ export class NavigationUpdateComponent implements OnInit {
     id: [null],
     sequence: [null],
     label: [null, Validators.required],
-    route: [null, [Validators.required]],
+    route: [null, [Validators.required, navigationLinkChecker]],
     icon: [null, [Validators.required]],
-    roles: [null, [Validators.required]]
+    roles: [null, [Validators.required]],
+    submenus: this.fb.array([])
   });
 
+  get submenus(): FormArray{
+    return this.navigationForm.get('submenus') as FormArray;
+  }
 
   constructor(private messageService: MessageService,
               private route: ActivatedRoute,
@@ -46,6 +57,34 @@ export class NavigationUpdateComponent implements OnInit {
     });
   }
 
+  addSubmenu(){
+    // const existingSubmenus =  this.navigationForm.get('submenus') as FormArray;
+    // const sequenceNumber = existingSubmenus.length+1;
+    const submenuForm = this.fb.group({
+      sequence: [],
+      label: ['Enter Label', Validators.required],
+      route: ['/route', [Validators.required, navigationLinkChecker]],
+      icon: ['Enter Icon', [Validators.required]],
+      roles: ['Enter Roles', [Validators.required]]
+    });
+
+    this.submenus.push(submenuForm);
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Submenu successfully added'
+    });
+  }
+
+  deleteSubmenu(submenuIndex: number){
+    this.submenus.removeAt(submenuIndex);
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Submenu successfully removed'
+    });
+  }
 
   save(){
 
