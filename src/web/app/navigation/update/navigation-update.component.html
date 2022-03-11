@@ -6,22 +6,23 @@
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationLabel">Navigation Label</label>
             <input id="navigationLabel" formControlName="label"  type="text" pInputText class="inputfield w-full">
-            <small *ngIf="(navigationForm.get('label')!.dirty || navigationForm.get('label')!.touched) && navigationForm.get('label')!.errors" class="p-error block">{{navigationValidationMessage}}</small>
+            <small *ngIf="(navigationForm.get('label')!.dirty || navigationForm.get('label')!.touched) && navigationForm.get('label')?.errors?.['required']" class="p-error block">The field is required</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationRoute">Navigation Route</label>
             <input id="navigationRoute" formControlName="route" type="text" pInputText class="inputfield w-full">
-            <small *ngIf="(navigationForm.get('route')!.dirty || navigationForm.get('route')!.touched) && navigationForm.get('route')!.errors" class="p-error block">{{routeValidationMessage}}</small>
+            <small *ngIf="(navigationForm.get('route')!.dirty || navigationForm.get('route')!.touched) && navigationForm.get('route')!.errors?.['required']" class="p-error block">The field is required</small>
+            <small *ngIf="(navigationForm.get('route')!.dirty || navigationForm.get('route')!.touched) && navigationForm.get('route')!.errors?.['route']" class="p-error block">The route must have a slash (/) at the beginning.</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationIcon">Navigation Icon</label>
             <input id="navigationIcon" formControlName="icon" type="text" pInputText class="inputfield w-full">
-            <small *ngIf="(navigationForm.get('icon')!.dirty || navigationForm.get('icon')!.touched) && navigationForm.get('icon')!.errors" class="p-error block">{{iconValidationMessage}}</small>
+            <small *ngIf="(navigationForm.get('icon')!.dirty || navigationForm.get('icon')!.touched) && navigationForm.get('icon')!.errors?.['required']" class="p-error block">The field is required</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="roles">Roles</label>
             <input id="roles" formControlName="roles" type="text" pInputText class="inputfield w-full">
-            <small *ngIf="(navigationForm.get('roles')!.dirty || navigationForm.get('roles')!.touched) && navigationForm.get('roles')!.errors" class="p-error block">{{rolesValidationMessage}}</small>
+            <small *ngIf="(navigationForm.get('roles')!.dirty || navigationForm.get('roles')!.touched) && navigationForm.get('roles')!.errors?.['required']" class="p-error block">The field is required</small>
           </div>
           <div class="col-12" formArrayName="submenus">
             <p-toolbar styleClass="mb-4">
@@ -44,22 +45,27 @@
                     </tr>
                   </ng-template>
                 <ng-template pTemplate="body"  let-submenu  let-index="rowIndex">
-                  <tr [pEditableRow]="submenu" [pReorderableRow]="index">
+                  <tr [formGroupName]="index" [pReorderableRow]="index">
                     <td>
                       <span class="pi pi-bars" [pReorderableRowHandle]="index"></span>
                     </td>
                     <td>
-                      <input pInputText type="text" formControlName="label" [value]="submenu.value.label"> {{submenu.get('label').value}} | {{submenu.get('label').touched}}  | {{submenu.get('label').dirty}} || {{submenu.get('label').errors}}
-                      <small  class="p-error block">Found Error</small>
+                      <input pInputText type="text" formControlName="label" [value]="submenu.value.label">
+                      <small *ngIf="(submenu.get('label').touched || submenu.get('label').dirty) && submenu.get('label').errors?.required"  class="p-error block">The field is required</small>
                     </td>
                     <td>
                       <input pInputText type="text" formControlName="route" [value]="submenu.value.route">
+                      <small *ngIf="(submenu.get('route').touched || submenu.get('route').dirty) && submenu.get('route').errors?.required"  class="p-error block">The field is required</small>
+                      <small *ngIf="(submenu.get('route').touched || submenu.get('route').dirty) && submenu.get('route').errors?.route"  class="p-error block">The route must have a slash (/) at the beginning</small>
+
                     </td>
                     <td>
                       <input pInputText type="text" formControlName="icon" [value]="submenu.value.icon">
+                      <small *ngIf="(submenu.get('icon').touched || submenu.get('icon').dirty) && submenu.get('icon').errors?.required"  class="p-error block">The field is required</small>
                     </td>
                     <td>
                       <input pInputText type="text" formControlName="roles" [value]="submenu.value.roles">
+                      <small *ngIf="(submenu.get('roles').touched || submenu.get('roles').dirty) && submenu.get('roles').errors?.required"  class="p-error block">The field is required</small>
                     </td>
                     <td>
                       <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteSubmenu(index)"></button>

@@ -45,6 +45,10 @@ export class NavigationUpdateComponent implements OnInit {
     return this.navigationForm.get('submenus') as FormArray;
   }
 
+  getSubmenus(): FormArray{
+    return this.navigationForm.get('submenus') as FormArray;
+  }
+
   constructor(private messageService: MessageService,
               private route: ActivatedRoute,
               private fb: FormBuilder) { }
@@ -153,22 +157,19 @@ export class NavigationUpdateComponent implements OnInit {
     });
   }
 
-  isSubmenuInvalid(submenuIndex: number, controlName: string): boolean{
-    console.log('checking whether submenu is invalid or not')
+
+  getSubmenuValidationMessage(submenuIndex: number, controlName: string): string{
+    console.log('In validation message');
     const providedSubmenu =  this.navigationForm.get('submenus') as FormArray;
     const providedSubmenuControl = providedSubmenu.get(controlName);
-    if((providedSubmenuControl?.touched || providedSubmenuControl?.dirty) && providedSubmenuControl.errors){
-      console.log('returning true');
-      return true;
-    }
-    else{
-      console.log('return false');
-      return false;
-    }
+    let validationMessage = '';
+    validationMessage = Object.keys(providedSubmenuControl?.errors!).map(
+        (key:string) => this.validationMessages[key]).join(' ');
+    console.log(validationMessage);
+    return validationMessage;
   }
 
   save(){
 
   }
-
 }
