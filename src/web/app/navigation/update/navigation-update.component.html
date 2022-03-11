@@ -78,7 +78,8 @@
                 <!--Empty and it's intentional-->
               </ng-template>
               <ng-template pTemplate="right">
-                <button pButton pRipple label="Save" icon="pi pi-save" class="p-button-primary mr-2" (click)="save()" [disabled]="navigationForm!.invalid"></button>
+                <button pButton pRipple label="Save" icon="pi pi-save" class="p-button-primary mr-2" (click)="save()" [disabled]="!navigationForm!.dirty || navigationForm!.invalid"></button>
+                <button pButton pRipple label="Back" icon="pi pi-arrow-left" class="p-button-danger mr-2" (click)="back()" ></button>
               </ng-template>
             </p-toolbar>
           </div>

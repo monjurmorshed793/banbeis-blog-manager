@@ -76,8 +76,6 @@ export class NavigationUpdateComponent implements OnInit {
         });
       }
     });
-
-    this.validationWatcher();
   }
 
   fetchNavigation(id: string){
@@ -91,6 +89,7 @@ export class NavigationUpdateComponent implements OnInit {
     console.log(navigation);
     this.navigationForm.reset();
     this.navigationForm.patchValue({
+      id: navigation.id,
       label: navigation.label,
       route: navigation.route,
       icon: navigation.icon,
@@ -114,58 +113,6 @@ export class NavigationUpdateComponent implements OnInit {
     });
   }
 
-  private validationWatcher(){
-    const labelControl = this.navigationForm.get('label');
-    labelControl?.valueChanges.subscribe(value=> this.setValidationMessages(labelControl, 'label'));
-
-
-    const routeControl = this.navigationForm.get('route');
-    routeControl?.valueChanges.pipe(
-      debounceTime(10)
-    ).subscribe(value=> this.setValidationMessages(routeControl,'route'));
-
-    const iconControl = this.navigationForm.get('icon');
-    iconControl?.valueChanges.pipe(
-      debounceTime(10)
-    ).subscribe(value=> this.setValidationMessages(iconControl,'icon'));
-
-    const roleControl = this.navigationForm.get('roles');
-    roleControl?.valueChanges.pipe(
-      debounceTime(10)
-    ).subscribe(value=> this.setValidationMessages(roleControl,'roles'));
-  }
-
-  setValidationMessages(c: AbstractControl, type?: string): void{
-    if(type==='label'){
-      this.navigationValidationMessage = '';
-
-      if ((c.touched || c.dirty) && c.errors) {
-        this.navigationValidationMessage = Object.keys(c.errors).map(
-          (key:string) => this.validationMessages[key]).join(' ');
-      }
-    }
-    else if(type==='route'){
-      this.routeValidationMessage = '';
-      if ((c.touched || c.dirty) && c.errors) {
-        this.routeValidationMessage = Object.keys(c.errors).map(
-          (key:string) => this.validationMessages[key]).join(' ');
-      }
-    }
-    else if(type==='icon'){
-      this.iconValidationMessage = '';
-      if ((c.touched || c.dirty) && c.errors) {
-        this.iconValidationMessage = Object.keys(c.errors).map(
-          (key:string) => this.validationMessages[key]).join(' ');
-      }
-    }
-    else if(type==='roles'){
-      this.rolesValidationMessage = '';
-      if ((c.touched || c.dirty) && c.errors) {
-        this.rolesValidationMessage = Object.keys(c.errors).map(
-          (key:string) => this.validationMessages[key]).join(' ');
-      }
-    }
-  }
 
   addSubmenu(){
     // const existingSubmenus =  this.navigationForm.get('submenus') as FormArray;
@@ -178,12 +125,6 @@ export class NavigationUpdateComponent implements OnInit {
     });
 
     this.submenus.push(submenuForm);
-
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Submenu successfully added'
-    });
   }
 
   deleteSubmenu(submenuIndex: number){
