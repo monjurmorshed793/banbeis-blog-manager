@@ -43,6 +43,13 @@ export class NavigationComponent implements OnInit {
         detail: 'Successfully deleted.'
       })
       this.getNavigations();
-    });
+    },
+      (error:any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error in deleting data.'
+        })
+      });
   }
 }
