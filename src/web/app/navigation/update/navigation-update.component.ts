@@ -68,6 +68,7 @@ export class NavigationUpdateComponent implements OnInit {
           label: 'Edit Navigation',
           routerLink: '/navigation/edit/'+this.navigationId
         });
+        this.fetchNavigation(this.navigationId);
       }else{
         this.breadcrumbItems.push({
           label: 'New Navigation',
@@ -77,6 +78,40 @@ export class NavigationUpdateComponent implements OnInit {
     });
 
     this.validationWatcher();
+  }
+
+  fetchNavigation(id: string){
+    this.navigationService.find(id).subscribe((res)=>{
+      this.navigation = res.body!;
+      this.convertToReactiveForm(this.navigation);
+    });
+  }
+
+  convertToReactiveForm(navigation: INavigation){
+    console.log(navigation);
+    this.navigationForm.reset();
+    this.navigationForm.patchValue({
+      label: navigation.label,
+      route: navigation.route,
+      icon: navigation.icon,
+      roles: navigation.roles,
+      submenus: navigation.submenus
+    });
+    this.navigationForm.setControl('submenus',this.submenus);
+    this.convertArrayToReactiveFormsArray(navigation);
+  }
+
+  convertArrayToReactiveFormsArray(navigation: INavigation){
+    navigation.submenus.forEach((n)=>{
+      const submenuForm = this.fb.group({
+        label: [n.label, Validators.required],
+        route: [n.route, [Validators.required, navigationLinkChecker]],
+        icon: [n.icon, [Validators.required]],
+        roles: [n.roles, [Validators.required]]
+      });
+
+      this.submenus.push(submenuForm);
+    });
   }
 
   private validationWatcher(){

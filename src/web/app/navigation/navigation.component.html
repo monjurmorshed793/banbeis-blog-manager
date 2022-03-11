@@ -31,7 +31,7 @@
         <td>{{navigation.roles}}</td>
         <td>
           <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded"></button>
-          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" [routerLink]="['/navigation/edit']" [queryParams]="{id: navigation.id}"></button>
           <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteNavigation(navigation.id)"></button>
         </td>
       </tr>
@@ -59,7 +59,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="6">There are no order for this product yet.</td>
+        <td colspan="6">The menu has no submenus</td>
       </tr>
     </ng-template>
   </p-table>
