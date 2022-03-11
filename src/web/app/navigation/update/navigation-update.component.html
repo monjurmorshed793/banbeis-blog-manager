@@ -5,20 +5,23 @@
         <div class="card grid">
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationLabel">Navigation Label</label>
-            <input id="navigationLabel" formControlName="label" type="text" pInputText class="inputfield w-full">
-            <small class="p-error block">Found error</small>
+            <input id="navigationLabel" formControlName="label"  type="text" pInputText class="inputfield w-full">
+            <small *ngIf="(navigationForm.get('label')!.dirty || navigationForm.get('label')!.touched) && navigationForm.get('label')!.errors" class="p-error block">{{navigationValidationMessage}}</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationRoute">Navigation Route</label>
             <input id="navigationRoute" formControlName="route" type="text" pInputText class="inputfield w-full">
+            <small *ngIf="(navigationForm.get('route')!.dirty || navigationForm.get('route')!.touched) && navigationForm.get('route')!.errors" class="p-error block">{{routeValidationMessage}}</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationIcon">Navigation Icon</label>
             <input id="navigationIcon" formControlName="icon" type="text" pInputText class="inputfield w-full">
+            <small *ngIf="(navigationForm.get('icon')!.dirty || navigationForm.get('icon')!.touched) && navigationForm.get('icon')!.errors" class="p-error block">{{iconValidationMessage}}</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="roles">Roles</label>
             <input id="roles" formControlName="roles" type="text" pInputText class="inputfield w-full">
+            <small *ngIf="(navigationForm.get('roles')!.dirty || navigationForm.get('roles')!.touched) && navigationForm.get('roles')!.errors" class="p-error block">{{rolesValidationMessage}}</small>
           </div>
           <div class="col-12" formArrayName="submenus">
             <p-toolbar styleClass="mb-4">
@@ -26,7 +29,7 @@
                 <!--Empty and it's intentional-->
               </ng-template>
               <ng-template pTemplate="right">
-                <button pButton pRipple label="Add Submenu" icon="pi pi-plus" class="p-button-success mr-2" (click)="addSubmenu()"></button>
+                <button pButton pRipple label="Add Submenu" icon="pi pi-plus" class="p-button-success mr-2" (click)="addSubmenu()" [disabled]="navigationForm.get('submenus')!.invalid"></button>
               </ng-template>
             </p-toolbar>
               <p-table [value]="submenus.controls" editMode="row" responsiveLayout="scroll" >
@@ -46,8 +49,8 @@
                       <span class="pi pi-bars" [pReorderableRowHandle]="index"></span>
                     </td>
                     <td>
-                      <input pInputText type="text" formControlName="label" [value]="submenu.value.label">
-
+                      <input pInputText type="text" formControlName="label" [value]="submenu.value.label"> {{submenu.get('label').value}} | {{submenu.get('label').touched}}  | {{submenu.get('label').dirty}} || {{submenu.get('label').errors}}
+                      <small  class="p-error block">Found Error</small>
                     </td>
                     <td>
                       <input pInputText type="text" formControlName="route" [value]="submenu.value.route">

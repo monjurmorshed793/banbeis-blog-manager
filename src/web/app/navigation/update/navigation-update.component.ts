@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {ActivatedRoute} from "@angular/router";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {debounceTime} from "rxjs";
 
 function navigationLinkChecker(c: AbstractControl): {[key: string]: boolean} | null{
-  if(c.value!==null && c.value.charAt(0)==='/'){
+  if(c.value!==null && c.value.charAt(0)!=='/'){
     return {route: true};
   }
   return null;
@@ -16,17 +17,29 @@ function navigationLinkChecker(c: AbstractControl): {[key: string]: boolean} | n
   styleUrls: ['./navigation-update.component.scss']
 })
 export class NavigationUpdateComponent implements OnInit {
+
+  private validationMessages: {[key:string]: string} = {
+    required: 'The field is required.',
+    route: 'Input a valid router. The router must have slash at the beginning'
+  };
+
+  public navigationValidationMessage = '';
+  public routeValidationMessage = '';
+  public iconValidationMessage = '';
+  public rolesValidationMessage = '';
+
   public breadcrumbItems: MenuItem[] = [];
   public navigationId!: string;
   public navigationForm: FormGroup = this.fb.group({
     id: [null],
     sequence: [null],
-    label: [null, Validators.required],
+    label: [null, [Validators.required]],
     route: [null, [Validators.required, navigationLinkChecker]],
     icon: [null, [Validators.required]],
     roles: [null, [Validators.required]],
     submenus: this.fb.array([])
   });
+
 
   get submenus(): FormArray{
     return this.navigationForm.get('submenus') as FormArray;
@@ -55,17 +68,71 @@ export class NavigationUpdateComponent implements OnInit {
         });
       }
     });
+
+    this.validationWatcher();
+  }
+
+  private validationWatcher(){
+    const labelControl = this.navigationForm.get('label');
+    labelControl?.valueChanges.subscribe(value=> this.setValidationMessages(labelControl, 'label'));
+
+
+    const routeControl = this.navigationForm.get('route');
+    routeControl?.valueChanges.pipe(
+      debounceTime(10)
+    ).subscribe(value=> this.setValidationMessages(routeControl,'route'));
+
+    const iconControl = this.navigationForm.get('icon');
+    iconControl?.valueChanges.pipe(
+      debounceTime(10)
+    ).subscribe(value=> this.setValidationMessages(iconControl,'icon'));
+
+    const roleControl = this.navigationForm.get('roles');
+    roleControl?.valueChanges.pipe(
+      debounceTime(10)
+    ).subscribe(value=> this.setValidationMessages(roleControl,'roles'));
+  }
+
+  setValidationMessages(c: AbstractControl, type?: string): void{
+    if(type==='label'){
+      this.navigationValidationMessage = '';
+
+      if ((c.touched || c.dirty) && c.errors) {
+        this.navigationValidationMessage = Object.keys(c.errors).map(
+          (key:string) => this.validationMessages[key]).join(' ');
+      }
+    }
+    else if(type==='route'){
+      this.routeValidationMessage = '';
+      if ((c.touched || c.dirty) && c.errors) {
+        this.routeValidationMessage = Object.keys(c.errors).map(
+          (key:string) => this.validationMessages[key]).join(' ');
+      }
+    }
+    else if(type==='icon'){
+      this.iconValidationMessage = '';
+      if ((c.touched || c.dirty) && c.errors) {
+        this.iconValidationMessage = Object.keys(c.errors).map(
+          (key:string) => this.validationMessages[key]).join(' ');
+      }
+    }
+    else if(type==='roles'){
+      this.rolesValidationMessage = '';
+      if ((c.touched || c.dirty) && c.errors) {
+        this.rolesValidationMessage = Object.keys(c.errors).map(
+          (key:string) => this.validationMessages[key]).join(' ');
+      }
+    }
   }
 
   addSubmenu(){
     // const existingSubmenus =  this.navigationForm.get('submenus') as FormArray;
     // const sequenceNumber = existingSubmenus.length+1;
     const submenuForm = this.fb.group({
-      sequence: [],
-      label: ['Enter Label', Validators.required],
-      route: ['/route', [Validators.required, navigationLinkChecker]],
-      icon: ['Enter Icon', [Validators.required]],
-      roles: ['Enter Roles', [Validators.required]]
+      label: [null, Validators.required],
+      route: [null, [Validators.required, navigationLinkChecker]],
+      icon: [null, [Validators.required]],
+      roles: [null, [Validators.required]]
     });
 
     this.submenus.push(submenuForm);
@@ -84,6 +151,20 @@ export class NavigationUpdateComponent implements OnInit {
       summary: 'Success',
       detail: 'Submenu successfully removed'
     });
+  }
+
+  isSubmenuInvalid(submenuIndex: number, controlName: string): boolean{
+    console.log('checking whether submenu is invalid or not')
+    const providedSubmenu =  this.navigationForm.get('submenus') as FormArray;
+    const providedSubmenuControl = providedSubmenu.get(controlName);
+    if((providedSubmenuControl?.touched || providedSubmenuControl?.dirty) && providedSubmenuControl.errors){
+      console.log('returning true');
+      return true;
+    }
+    else{
+      console.log('return false');
+      return false;
+    }
   }
 
   save(){
