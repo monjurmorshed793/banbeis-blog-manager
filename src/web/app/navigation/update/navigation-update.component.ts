@@ -3,6 +3,7 @@ import {MenuItem, MessageService} from "primeng/api";
 import {ActivatedRoute} from "@angular/router";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {debounceTime} from "rxjs";
+import {INavigation, NavigationService} from "banbeis-shared-services";
 
 function navigationLinkChecker(c: AbstractControl): {[key: string]: boolean} | null{
   if(c.value!==null && c.value.charAt(0)!=='/'){
@@ -30,11 +31,12 @@ export class NavigationUpdateComponent implements OnInit {
 
   public breadcrumbItems: MenuItem[] = [];
   public navigationId!: string;
+  public navigation?: INavigation;
   public navigationForm: FormGroup = this.fb.group({
     id: [null],
     sequence: [null],
     label: [null, [Validators.required]],
-    route: [null, [Validators.required, navigationLinkChecker]],
+    route: [null],
     icon: [null, [Validators.required]],
     roles: [null, [Validators.required]],
     submenus: this.fb.array([])
@@ -51,7 +53,8 @@ export class NavigationUpdateComponent implements OnInit {
 
   constructor(private messageService: MessageService,
               private route: ActivatedRoute,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private navigationService: NavigationService) { }
 
 
   ngOnInit(): void {
@@ -170,6 +173,47 @@ export class NavigationUpdateComponent implements OnInit {
   }
 
   save(){
+    if(this.navigationForm.valid){
+      if(this.navigationForm.dirty){
+        const navigation = {...this.navigation, ...this.navigationForm.value};
+        console.log(navigation);
+        if(!navigation.id){
+            this.navigationService.create(navigation)
+              .subscribe({
+              next: ()=> this.onSaveComplete(),
+              error: err=> this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error in saving data.'
+              })
+              })
+        }else{
+          this.navigationService.update(navigation)
+            .subscribe({
+              next: ()=> this.onSaveComplete(),
+              error: err => this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error in updating data.'
+              })
+            })
+        }
+      }
+    }else{
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'The form is not yet complete.'
+      });
+    }
+  }
 
+  onSaveComplete(){
+    this.navigationForm.reset();
+    this.back();
+  }
+
+  back(){
+    window.history.back();
   }
 }

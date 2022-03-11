@@ -1,5 +1,5 @@
 <p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
-<p-toast position="top-left"></p-toast>
+<p-toast position="top-center"></p-toast>
 <p-card>
   <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
@@ -16,6 +16,7 @@
         <th>Label</th>
         <th>Route</th>
         <th>Icon</th>
+        <th>Roles</th>
         <th>Action</th>
       </tr>
     </ng-template>
@@ -26,11 +27,45 @@
         </td>
         <td>{{navigation.label}}</td>
         <td>{{navigation.route}}</td>
-        <td><i class="{{navigation.icon}}"></i></td>
+        <td><i class="pi pi-{{navigation.icon}}"></i></td>
+        <td>{{navigation.roles}}</td>
         <td>
           <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded"></button>
           <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary"></button>
-          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteNavigation(navigation.id)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-navigation>
+      <tr>
+        <td colspan="5">
+          <div class="p-3">
+            <p-table [value]="navigation.submenus">
+              <ng-template pTemplate="header">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Label</th>
+                    <th>Route</th>
+                    <th>Icon</th>
+                    <th>Roles</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-submenu>
+                  <tr>
+                    <td>{{submenu.label}}</td>
+                    <td>{{submenu.route}}</td>
+                    <td><i class="pi pi-{{submenu.icon}}"></i></td>
+                    <td>{{submenu.roles}}</td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">The menu contains no submenus.</td>
+                  </tr>
+                </ng-template>
+              </ng-template>
+            </p-table>
+          </div>
         </td>
       </tr>
     </ng-template>

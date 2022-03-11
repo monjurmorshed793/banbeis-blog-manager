@@ -18,16 +18,31 @@ export class NavigationComponent implements OnInit {
     this.breadcrumbItems = [
       {label: 'Navigation', routerLink: ['/navigation']}
     ];
+    this.getNavigations();
+  }
 
-    this.navigationService.getAll().subscribe((res)=>{
+
+  private getNavigations() {
+    this.navigations = [];
+    this.navigationService.getAll().subscribe((res) => {
       this.navigations = res.body!;
-      let navigation:INavigation = <INavigation>{};
-      navigation.id='1';
-      navigation.label='Dashboard';
-      navigation.route='/dashboard';
-      navigation.icon='pi pi-building';
+      let navigation: INavigation = <INavigation>{};
+      navigation.id = '1';
+      navigation.label = 'Dashboard';
+      navigation.route = '/dashboard';
+      navigation.icon = 'building';
       this.navigations.push(navigation);
     });
   }
 
+  deleteNavigation(id: string){
+    this.navigationService.delete(id).subscribe((res:any)=>{
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Successfully deleted.'
+      })
+      this.getNavigations();
+    });
+  }
 }
