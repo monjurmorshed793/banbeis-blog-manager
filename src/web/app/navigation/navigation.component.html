@@ -30,7 +30,7 @@
         <td><i class="pi pi-{{navigation.icon}}"></i></td>
         <td>{{navigation.roles}}</td>
         <td>
-          <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded"></button>
+          <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded" [routerLink]="['/navigation/detail']" [queryParams]="{id: navigation.id}"></button>
           <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" [routerLink]="['/navigation/edit']" [queryParams]="{id: navigation.id}"></button>
           <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteNavigation(navigation.id)"></button>
         </td>

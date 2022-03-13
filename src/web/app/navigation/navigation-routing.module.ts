@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {NavigationComponent} from "./navigation.component";
 import {NavigationUpdateComponent} from "./update/navigation-update.component";
+import {NavigationDetailComponent} from "./navigation-detail/navigation-detail/navigation-detail.component";
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'edit',
     component: NavigationUpdateComponent
+  },
+  {
+    path: 'detail',
+    component: NavigationDetailComponent
   }
 ];
 

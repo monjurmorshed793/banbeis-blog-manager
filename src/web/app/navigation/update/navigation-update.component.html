@@ -60,7 +60,6 @@
 
                     </td>
                     <td>
-<!--                      <input pInputText type="text" formControlName="icon" [value]="submenu.value.icon">-->
                       <p-autoComplete formControlName="icon"  [suggestions]="filteredIcons" [dropdown]="true" (completeMethod)="filterIcons($event)">
                           <ng-template let-icon pTemplate="item">
                             <div>
@@ -68,7 +67,7 @@
                             </div>
                           </ng-template>
                       </p-autoComplete>
-                      ( <i class="pi pi-{{submenu.value.icon}}"></i>)
+                      (<i class="pi pi-{{submenu.value.icon}}"></i>)
                       <small *ngIf="(submenu.get('icon').touched || submenu.get('icon').dirty) && submenu.get('icon').errors?.required"  class="p-error block">The field is required</small>
                     </td>
                     <td>
@@ -81,7 +80,7 @@
                   </tr>
                 </ng-template>
               </p-table>
-            <p-toolbar styleClass="mb-4">
+            <p-toolbar styleClass="mb-4" >
               <ng-template pTemplate="left">
                 <!--Empty and it's intentional-->
               </ng-template>
