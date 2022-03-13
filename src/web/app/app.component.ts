@@ -5,6 +5,8 @@ import {TestService} from "./TestService";
 import {Router, RouterModule} from "@angular/router";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {MenuItem} from "primeng/api";
+import {INavigation, NavigationService} from "banbeis-shared-services";
+import {Menu} from "primeng/menu";
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,8 @@ export class AppComponent implements OnInit{
   constructor(private readonly keyalockService: KeycloakService,
               private testService: TestService,
               private router: Router,
-              private breakPointObserver: BreakpointObserver){
+              private breakPointObserver: BreakpointObserver,
+              private navigationService: NavigationService){
 
   }
 
@@ -48,84 +51,64 @@ export class AppComponent implements OnInit{
       this.login();
     }
 
+    this.navigationService.getAll().subscribe((navigations)=>{
+      this.generateSideMenus(navigations.body!);
+    });
 
-    this.items = [
-      {
-        label: 'File',
-        icon: 'pi pi-pw pi-file',
-        items: [{
-          label: 'New',
-          icon: 'pi pi-fw pi-plus',
-          items: [
-            {label: 'User', icon: 'pi pi-fw pi-user-plus'},
-            {label: 'Filter', icon: 'pi pi-fw pi-filter'}
-          ]
-        },
-          {label: 'Open', icon: 'pi pi-fw pi-external-link'},
-          {separator: true},
-          {label: 'Quit', icon: 'pi pi-fw pi-times'}
-        ]
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil',
-        items: [
-          {label: 'Delete', icon: 'pi pi-fw pi-trash'},
-          {label: 'Refresh', icon: 'pi pi-fw pi-refresh'}
-        ]
-      },
-      {
-        label: 'Help',
-        icon: 'pi pi-fw pi-question',
-        items: [
-          {
-            label: 'Contents',
-            icon: 'pi pi-pi pi-bars'
-          },
-          {
-            label: 'Search',
-            icon: 'pi pi-pi pi-search',
-            items: [
-              {
-                label: 'Text',
-                items: [
-                  {
-                    label: 'Workspace'
-                  }
-                ]
-              },
-              {
-                label: 'User',
-                icon: 'pi pi-fw pi-file',
-              }
-            ]}
-        ]
-      },
-      {
-        label: 'Actions',
-        icon: 'pi pi-fw pi-cog',
-        items: [
-          {
-            label: 'Edit',
-            icon: 'pi pi-fw pi-pencil',
-            items: [
-              {label: 'Save', icon: 'pi pi-fw pi-save'},
-              {label: 'Update', icon: 'pi pi-fw pi-save'},
-            ]
-          },
-          {
-            label: 'Other',
-            icon: 'pi pi-fw pi-tags',
-            items: [
-              {label: 'Delete', icon: 'pi pi-fw pi-minus'}
-            ]
-          }
-        ]
-      }
-    ];
+
   }
 
+  generateSideMenus(navigations: INavigation[]){
+    this.items = [];
+    this.items.push({
+      label: 'Navigation',
+      icon: 'pi pi-link',
+      routerLink: ['/navigation'],
+      routerLinkActiveOptions: {
+        exact: true
+      },
+      expanded: this.checkActiveState('/navigation')
+    });
 
+    navigations.forEach((n)=>{
+      let menuItem: MenuItem = <MenuItem>{};
+      menuItem.label = n.label;
+      menuItem.icon = 'pi pi-'+n.icon;
+      if(n.route){
+        menuItem.routerLink = [n.route];
+        menuItem.expanded = this.checkActiveState(n.route);
+      }
+      menuItem.routerLinkActiveOptions = {
+        exact: true
+      };
+      if(n.submenus.length>0){
+        menuItem.items = [];
+        n.submenus.forEach((s)=>{
+          let submenuItem: MenuItem = <MenuItem>{};
+          submenuItem.label = s.label;
+          submenuItem.icon = 'pi pi-'+s.icon;
+          if(s.route){
+            submenuItem.routerLink = [s.route];
+            submenuItem.expanded = this.checkActiveState(s.route);
+          }
+          submenuItem.routerLinkActiveOptions = {
+            exact: true
+          };
+          menuItem.items?.push(submenuItem);
+        })
+      }
+      this.items.push(menuItem);
+    });
+  }
+
+  checkActiveState(givenLink: string) {
+    console.log(this.router.url);
+    if (this.router.url.indexOf(givenLink) === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   public login(){
     this.keyalockService.login();
   }

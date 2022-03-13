@@ -13,7 +13,11 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { MaterialModule } from './shared/material.module';
 import {PanelMenuModule} from "primeng/panelmenu";
 import {MenuModule} from "primeng/menu";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {MessageService} from "primeng/api";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BanbeisSharedServicesModule} from "banbeis-shared-services";
+import {ToolbarModule} from "primeng/toolbar";
+import {ButtonModule} from "primeng/button";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -39,23 +43,28 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SidenavComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
-    HttpClientModule,
     BrowserAnimationsModule,
     RouterModule,
     MaterialModule,
     PanelMenuModule,
     MenuModule,
-    NgbModule
+    FormsModule,
+    ReactiveFormsModule,
+    BanbeisSharedServicesModule.forRoot(environment.apiUrl),
+    ToolbarModule,
+    ButtonModule,
   ],
   providers: [{
     provide: APP_INITIALIZER,
     useFactory: initializeKeycloak,
     multi: true,
     deps: [KeycloakService]
-  }],
+  }, MessageService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
