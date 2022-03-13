@@ -1,8 +1,19 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" >
 
-  <button mat-button class="sidenav-toggle" (click)="toggleSidenav.emit()">
+  <button mat-button  (click)="toggleSidenav.emit()">
     <mat-icon>menu</mat-icon>
   </button>
 
   <span>Blog Manager</span>
 </mat-toolbar>
+<!--
+<p-toolbar styleClass="bg-indigo-700 p-4 w-full fixed">
+  <div class="p-toolbar-group-left">
+&lt;!&ndash;    <p-button class="p-button-rounded" icon="pi pi-bars" (click)="toggleSidenav.emit()"></p-button>&ndash;&gt;
+    <i class="pi pi-bars bg-white" style="cursor: pointer" (click)="toggleSidenav.emit()" ></i>
+  </div>
+  <div class="p-toolbar-group-right">
+
+  </div>
+</p-toolbar>
+-->

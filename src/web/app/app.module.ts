@@ -16,6 +16,8 @@ import {MenuModule} from "primeng/menu";
 import {MessageService} from "primeng/api";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BanbeisSharedServicesModule} from "banbeis-shared-services";
+import {ToolbarModule} from "primeng/toolbar";
+import {ButtonModule} from "primeng/button";
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -53,6 +55,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     FormsModule,
     ReactiveFormsModule,
     BanbeisSharedServicesModule.forRoot(environment.apiUrl),
+    ToolbarModule,
+    ButtonModule,
   ],
   providers: [{
     provide: APP_INITIALIZER,
