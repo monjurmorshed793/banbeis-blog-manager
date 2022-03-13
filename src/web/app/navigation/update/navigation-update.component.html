@@ -33,7 +33,7 @@
                 <button pButton pRipple label="Add Submenu" icon="pi pi-plus" class="p-button-success mr-2" (click)="addSubmenu()" [disabled]="navigationForm.get('submenus')!.invalid"></button>
               </ng-template>
             </p-toolbar>
-              <p-table [value]="submenus.controls" editMode="row" responsiveLayout="scroll" >
+              <p-table [value]="submenus.controls" editMode="row" responsiveLayout="scroll" (onRowReorder)="detectRowIndexChange($event, submenus.controls)">
                   <ng-template pTemplate="header">
                     <tr>
                       <th style="width:3rem"></th>
@@ -45,7 +45,7 @@
                     </tr>
                   </ng-template>
                 <ng-template pTemplate="body"  let-submenu  let-index="rowIndex">
-                  <tr [formGroupName]="index" [pReorderableRow]="index">
+                  <tr [formGroupName]="index" [pReorderableRow]="index" >
                     <td>
                       <span class="pi pi-bars" [pReorderableRowHandle]="index"></span>
                     </td>
@@ -60,7 +60,15 @@
 
                     </td>
                     <td>
-                      <input pInputText type="text" formControlName="icon" [value]="submenu.value.icon">
+<!--                      <input pInputText type="text" formControlName="icon" [value]="submenu.value.icon">-->
+                      <p-autoComplete formControlName="icon"  [suggestions]="filteredIcons" [dropdown]="true" (completeMethod)="filterIcons($event)">
+                          <ng-template let-icon pTemplate="item">
+                            <div>
+                              <i class="pi pi-{{icon}}"></i>
+                            </div>
+                          </ng-template>
+                      </p-autoComplete>
+                      ( <i class="pi pi-{{submenu.value.icon}}"></i>)
                       <small *ngIf="(submenu.get('icon').touched || submenu.get('icon').dirty) && submenu.get('icon').errors?.required"  class="p-error block">The field is required</small>
                     </td>
                     <td>
@@ -78,7 +86,7 @@
                 <!--Empty and it's intentional-->
               </ng-template>
               <ng-template pTemplate="right">
-                <button pButton pRipple label="Save" icon="pi pi-save" class="p-button-primary mr-2" (click)="save()" [disabled]="!navigationForm!.dirty || navigationForm!.invalid"></button>
+                <button pButton pRipple label="Save" icon="pi pi-save" class="p-button-primary mr-2" (click)="save()" [disabled]="navigationForm!.invalid"></button>
                 <button pButton pRipple label="Back" icon="pi pi-arrow-left" class="p-button-danger mr-2" (click)="back()" ></button>
               </ng-template>
             </p-toolbar>

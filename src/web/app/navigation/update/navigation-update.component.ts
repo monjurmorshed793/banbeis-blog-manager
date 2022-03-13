@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {ActivatedRoute} from "@angular/router";
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {debounceTime} from "rxjs";
-import {INavigation, NavigationService} from "banbeis-shared-services";
+import {INavigation, NavigationService, IconService} from "banbeis-shared-services";
+import {EventData} from "@angular/cdk/testing";
 
 function navigationLinkChecker(c: AbstractControl): {[key: string]: boolean} | null{
   if(c.value!==null && c.value.charAt(0)!=='/'){
@@ -28,6 +29,9 @@ export class NavigationUpdateComponent implements OnInit {
   public routeValidationMessage = '';
   public iconValidationMessage = '';
   public rolesValidationMessage = '';
+  public updatedSubmenus: INavigation[] = [];
+  public icons: string[] = [];
+  public filteredIcons: string[] = [];
 
   public breadcrumbItems: MenuItem[] = [];
   public navigationId!: string;
@@ -54,7 +58,8 @@ export class NavigationUpdateComponent implements OnInit {
   constructor(private messageService: MessageService,
               private route: ActivatedRoute,
               private fb: FormBuilder,
-              private navigationService: NavigationService) { }
+              private navigationService: NavigationService,
+              private iconService: IconService) { }
 
 
   ngOnInit(): void {
@@ -76,6 +81,9 @@ export class NavigationUpdateComponent implements OnInit {
         });
       }
     });
+
+    this.icons = this.iconService.getIcons();
+    console.log(this.icons);
   }
 
   fetchNavigation(id: string){
@@ -83,6 +91,20 @@ export class NavigationUpdateComponent implements OnInit {
       this.navigation = res.body!;
       this.convertToReactiveForm(this.navigation);
     });
+  }
+
+  filterIcons(event:any){
+    let filtered: string[] = [];
+    let query = event.query;
+    console.log('in the filter icons');
+    for(let i=0; i< this.icons.length; i++){
+      let icon = this.icons[i];
+      if(icon.toLocaleLowerCase().indexOf(query.toLowerCase()) == 0){
+        filtered.push(icon);
+      }
+    }
+    this.filteredIcons = filtered;
+    console.log(this.filteredIcons);
   }
 
   convertToReactiveForm(navigation: INavigation){
@@ -118,6 +140,7 @@ export class NavigationUpdateComponent implements OnInit {
     // const existingSubmenus =  this.navigationForm.get('submenus') as FormArray;
     // const sequenceNumber = existingSubmenus.length+1;
     const submenuForm = this.fb.group({
+      sequence: [null],
       label: [null, Validators.required],
       route: [null, [Validators.required, navigationLinkChecker]],
       icon: [null, [Validators.required]],
@@ -150,7 +173,6 @@ export class NavigationUpdateComponent implements OnInit {
 
   save(){
     if(this.navigationForm.valid){
-      if(this.navigationForm.dirty){
         const navigation = {...this.navigation, ...this.navigationForm.value};
         console.log(navigation);
         if(!navigation.id){
@@ -174,7 +196,6 @@ export class NavigationUpdateComponent implements OnInit {
               })
             })
         }
-      }
     }else{
       this.messageService.add({
         severity: 'error',
@@ -183,6 +204,15 @@ export class NavigationUpdateComponent implements OnInit {
       });
     }
   }
+
+  public detectRowIndexChange($event: Event, formControl: AbstractControl[]){
+    let submenuSequence = 0;
+    formControl.forEach((f)=>{
+      submenuSequence+=1;
+      f.patchValue('sequence', submenuSequence);
+    });
+  }
+
 
   onSaveComplete(){
     this.navigationForm.reset();

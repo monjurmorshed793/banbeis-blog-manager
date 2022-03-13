@@ -14,6 +14,7 @@ import {ToolbarModule} from "primeng/toolbar";
 import { NavigationUpdateComponent } from './update/navigation-update.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {InputTextModule} from "primeng/inputtext";
     ToolbarModule,
     FormsModule,
     ReactiveFormsModule,
-    InputTextModule
+    InputTextModule,
+    AutoCompleteModule
   ]
 })
 export class NavigationModule { }
