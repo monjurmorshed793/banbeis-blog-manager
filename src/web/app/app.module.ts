@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {environment} from "../environments/environment";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {RouterModule} from "@angular/router";
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -18,6 +18,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BanbeisSharedServicesModule} from "banbeis-shared-services";
 import {ToolbarModule} from "primeng/toolbar";
 import {ButtonModule} from "primeng/button";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -57,6 +65,17 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BanbeisSharedServicesModule.forRoot(environment.apiUrl),
     ToolbarModule,
     ButtonModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'bn',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
+  ],
+  exports: [
+    TranslateModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
