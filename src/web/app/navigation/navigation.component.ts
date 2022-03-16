@@ -33,11 +33,21 @@ export class NavigationComponent implements OnInit {
     this.navigationService.getAll().subscribe((res) => {
       this.navigations = res.body!;
       let navigation: INavigation = <INavigation>{};
-      navigation.id = '1';
       navigation.label = 'Dashboard';
       navigation.route = '/dashboard';
       navigation.icon = 'building';
       this.navigations.push(navigation);
+    });
+  }
+
+  updateNavigations(event: Event){
+    let sequence = 0;
+    this.navigations.forEach(n=>{
+      if(n.id){
+        sequence+=1;
+        n.sequence=sequence;
+       this.navigationService.update(n).subscribe();
+      }
     });
   }
 

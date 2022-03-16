@@ -16,7 +16,14 @@
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
             <label for="navigationIcon">Navigation Icon</label>
-            <input id="navigationIcon" formControlName="icon" type="text" pInputText class="inputfield w-full">
+            <p-autoComplete formControlName="icon"  [suggestions]="filteredIcons" [dropdown]="true" (completeMethod)="filterIcons($event)">
+              <ng-template let-icon pTemplate="item">
+                <div>
+                  <i class="pi pi-{{icon}}"></i>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+            (<i class="pi pi-{{navigationForm.value.icon}}"></i>)
             <small *ngIf="(navigationForm.get('icon')!.dirty || navigationForm.get('icon')!.touched) && navigationForm.get('icon')!.errors?.['required']" class="p-error block">The field is required</small>
           </div>
           <div class="field col-12 md:col-6 lg:col-3">
@@ -24,7 +31,7 @@
             <input id="roles" formControlName="roles" type="text" pInputText class="inputfield w-full">
             <small *ngIf="(navigationForm.get('roles')!.dirty || navigationForm.get('roles')!.touched) && navigationForm.get('roles')!.errors?.['required']" class="p-error block">The field is required</small>
           </div>
-          <div class="col-12" formArrayName="submenus">
+          <div class="col-12" formArrayName="submenus" style="padding-bottom: 40px;">
             <p-toolbar styleClass="mb-4">
               <ng-template pTemplate="left">
                 <!--Empty and it's intentional-->
@@ -80,6 +87,9 @@
                   </tr>
                 </ng-template>
               </p-table>
+
+          </div>
+          <div class="col-12" >
             <p-toolbar styleClass="mb-4" >
               <ng-template pTemplate="left">
                 <!--Empty and it's intentional-->
