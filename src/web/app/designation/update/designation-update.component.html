@@ -1,0 +1,66 @@
+<p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
+<p-toast position="top-center"></p-toast>
+<p-card>
+  <form [formGroup]="designationForm">
+    <div class="card grid">
+      <div class="field col-12 md:col-1 md:text-right">
+        <label>Name</label>
+      </div>
+      <div class="field col-12 md:col-5">
+        <input formControlName="name" class="w-full " pInputText type="text" >
+        <small *ngIf="(designationForm.get('name')!.dirty
+        || designationForm.get('name')!.touched)
+        && designationForm.get('name')!.errors?.['required']" class="p-error block">The field is required</small>
+      </div>
+
+      <div class="field col-12 md:col-1 md:text-right">
+        <label>নাম</label>
+      </div>
+      <div class="field col-12 md:col-5" formGroupName="bn">
+        <input formControlName="name" class="w-full " pInputText type="text" >
+        <small *ngIf="(designationForm.get('bn')!.get('name')!.dirty
+        || designationForm.get('bn')!.get('name')!.touched)
+        && designationForm.get('bn')!.get('name')!.errors?.['required']" class="p-error block">The field is required</small>
+      </div>
+
+
+      <div class="field col-12 md:col-1 md:text-right">
+        <label>Short Name</label>
+      </div>
+      <div class="field col-12 md:col-5">
+        <input formControlName="shortName" class="w-full" pInputText type="text" >
+        <small *ngIf="(designationForm.get('shortName')!.dirty
+        || designationForm.get('shortName')!.touched)
+        && designationForm.get('shortName')!.errors?.['required']" class="p-error block">The field is required</small>
+      </div>
+
+      <div class="field col-12 md:col-1 md:text-right">
+        <label>সংক্ষিপ্ত নাম</label>
+      </div>
+      <div class="field col-12 md:col-5" formGroupName="bn">
+        <input formControlName="shortName" class="w-full" pInputText type="text" >
+        <small *ngIf="(designationForm.get('bn')!.get('shortName')!.dirty
+        || designationForm.get('bn')!.get('shortName')!.touched)
+        && designationForm.get('bn')!.get('shortName')!.errors?.['required']" class="p-error block">The field is required</small>
+      </div>
+
+      <div class="field col-12 md:col-1 md:text-right">
+        <label>Grade</label>
+      </div>
+      <div class="field col-12 md:col-5">
+        <input formControlName="grade" class="w-full" pInputText type="number"> <span *ngIf="designationForm.value.grade">(বাংলায়ঃ{{designationForm.value.grade | banglaNumberTranslate}})</span>
+        <small *ngIf="(designationForm.get('grade')!.dirty
+        || designationForm.get('grade')!.touched)
+        && designationForm.get('grade')!.errors?.['required']" class="p-error block">The field is required</small>
+      </div>
+    </div>
+  </form>
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+    </div>
+    <div class="p-toolbar-group-right">
+      <button pButton pRipple label="Save" [disabled]="designationForm!.invalid || disableSaveButton" icon="pi pi-save" class="p-button-primary mr-2" (click)="save()"></button>
+      <button pButton pRipple label="Back" icon="pi pi-arrow-left" class="p-button-danger" (click)="back()"></button>
+    </div>
+  </p-toolbar>
+</p-card>

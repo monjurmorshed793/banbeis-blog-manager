@@ -20,6 +20,7 @@ import {ToolbarModule} from "primeng/toolbar";
 import {ButtonModule} from "primeng/button";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {InputTextModule} from "primeng/inputtext";
 
 
 // AoT requires an exported function for factories
@@ -75,7 +76,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     })
   ],
   exports: [
-    TranslateModule
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputTextModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
