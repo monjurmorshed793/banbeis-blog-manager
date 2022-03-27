@@ -1,0 +1,38 @@
+<p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
+<p-toast position="top-center"></p-toast>
+<p-card>
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <!--Empty and it's intentional-->
+    </ng-template>
+    <ng-template pTemplate="right">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" [routerLink]="['/designation/new']"></button>
+    </ng-template>
+  </p-toolbar>
+  <p-table [value]="designations" responsiveLayout="scroll"  [scrollable]="true" scrollHeight="500px">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Short name</th>
+        <th>BN Name</th>
+        <th>BN Short name</th>
+        <th>Grade</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-designation>
+      <tr>
+        <td>{{designation.name}}</td>
+        <td>{{designation.shortName}}</td>
+        <td>{{designation.bn.name}}</td>
+        <td>{{designation.bn.shortName}}</td>
+        <td>{{designation.grade}}|{{designation.grade | banglaNumberTranslate}}</td>
+        <td>
+
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" [routerLink]="['/designation/edit']" [queryParams]="{id: designation.id}"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteDesignation(designation.id)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

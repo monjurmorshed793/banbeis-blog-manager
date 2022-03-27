@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {INavigation, NavigationService} from "banbeis-shared-services";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-navigation',
@@ -12,9 +13,14 @@ export class NavigationComponent implements OnInit {
   public breadcrumbItems: MenuItem[] = [];
   public navigations: INavigation[] = [];
 
-  constructor(private navigationService: NavigationService, private messageService: MessageService) { }
+  constructor(private navigationService: NavigationService,
+              private messageService: MessageService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
+    this.translate.setDefaultLang("en");
+    this.translate.use("fn");
+
     this.breadcrumbItems = [
       {label: 'Navigation', routerLink: ['/navigation']}
     ];
@@ -27,11 +33,21 @@ export class NavigationComponent implements OnInit {
     this.navigationService.getAll().subscribe((res) => {
       this.navigations = res.body!;
       let navigation: INavigation = <INavigation>{};
-      navigation.id = '1';
       navigation.label = 'Dashboard';
       navigation.route = '/dashboard';
       navigation.icon = 'building';
       this.navigations.push(navigation);
+    });
+  }
+
+  updateNavigations(event: Event){
+    let sequence = 0;
+    this.navigations.forEach(n=>{
+      if(n.id){
+        sequence+=1;
+        n.sequence=sequence;
+       this.navigationService.update(n).subscribe();
+      }
     });
   }
 

@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: ()=> import('./navigation/navigation.module').then(m=> m.NavigationModule)
   },
   {
+    path: 'designation',
+    loadChildren: ()=> import('./designation/designation.module').then(m=> m.DesignationModule)
+  },
+  {
     path: '**',
     redirectTo: 'dashboard'
   },

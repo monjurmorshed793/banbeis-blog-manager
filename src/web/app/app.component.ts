@@ -7,6 +7,7 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/lay
 import {MenuItem} from "primeng/api";
 import {INavigation, NavigationService} from "banbeis-shared-services";
 import {Menu} from "primeng/menu";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -25,13 +26,16 @@ export class AppComponent implements OnInit{
               private testService: TestService,
               private router: Router,
               private breakPointObserver: BreakpointObserver,
-              private navigationService: NavigationService){
+              private navigationService: NavigationService,
+              private translate: TranslateService){
 
   }
 
 
   async ngOnInit() {
 
+    this.translate.setDefaultLang("en");
+    this.translate.use("bn");
     this.breakPointObserver
       .observe([Breakpoints.XSmall])
       .subscribe((state: BreakpointState)=>{

@@ -16,6 +16,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import { NavigationDetailComponent } from './navigation-detail/navigation-detail/navigation-detail.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NavigationDetailComponent } from './navigation-detail/navigation-detail
     FormsModule,
     ReactiveFormsModule,
     InputTextModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    TranslateModule
   ]
 })
 export class NavigationModule { }

@@ -9,9 +9,10 @@
       <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" [routerLink]="['/navigation/new']"></button>
     </ng-template>
   </p-toolbar>
-  <p-table responsiveLayout="scroll" [value]="navigations" dataKey="id" >
+  <p-table responsiveLayout="scroll" [value]="navigations" dataKey="id" (onRowReorder)="updateNavigations($event)">
     <ng-template pTemplate="header">
       <tr>
+        <th style="width: 3rem"></th>
         <th style="width: 3rem"></th>
         <th>Label</th>
         <th>Route</th>
@@ -20,12 +21,15 @@
         <th>Action</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-navigation let-expanded="expanded">
-      <tr>
+    <ng-template pTemplate="body" let-navigation let-expanded="expanded" let-index="rowIndex" >
+      <tr [pReorderableRow]="index">
+        <td>
+          <span class="pi pi-bars" [pReorderableRowHandle]="index"></span>
+        </td>
         <td>
           <button type="button" pButton pRipple [pRowToggler]="navigation" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
         </td>
-        <td>{{navigation.label}}</td>
+        <td>{{navigation.label | translate}}</td>
         <td>{{navigation.route}}</td>
         <td><i class="pi pi-{{navigation.icon}}"></i></td>
         <td>{{navigation.roles}}</td>
