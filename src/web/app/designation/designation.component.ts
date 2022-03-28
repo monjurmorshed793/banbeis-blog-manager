@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {DesignationService} from "banbeis-shared-services";
+import {DesignationService, AllDesignationsGQL, AllDesignationResponse} from "banbeis-shared-services";
 import {IDesignation} from "banbeis-shared-services/lib/models/designation";
 import {MenuItem, MessageService} from "primeng/api";
-import {Apollo, gql} from "apollo-angular";
-import {Subscription} from "rxjs";
+// import {Apollo, gql} from "apollo-angular";
+import {map, Subscription} from "rxjs";
+import {QueryRef} from "apollo-angular";
 
-const GET_DESIGNATIONS = gql`
-    query allDesignations{
-      allDesignations{
-        id
-        name
-        shortName
-        grade
-        bn{
-          name
-          shortName
-        }
-      }
-    }
-`;
+// const GET_DESIGNATIONS = gql`
+//     query allDesignations{
+//       allDesignations{
+//         id
+//         name
+//         shortName
+//         grade
+//         bn{
+//           name
+//           shortName
+//         }
+//       }
+//     }
+// `;
 
 @Component({
   selector: 'app-designation',
@@ -29,11 +30,11 @@ export class DesignationComponent implements OnInit {
 
   breadcrumbItems: MenuItem[] = [];
   designations!: IDesignation[];
-  private querySubscription!: Subscription;
+  private allDesignationsQuery!: QueryRef<AllDesignationResponse>;
 
   constructor(private designationService: DesignationService,
               private messageService: MessageService,
-              private apollo: Apollo) { }
+              private allDesignationsGQL: AllDesignationsGQL) { }
 
   ngOnInit(): void {
 
@@ -43,28 +44,17 @@ export class DesignationComponent implements OnInit {
 
     this.fetchAllDesignations();
 
-
   }
 
-
   fetchAllDesignations(){
-    this.apollo.watchQuery<any>({
-      query: GET_DESIGNATIONS,
-      refetchWritePolicy: "overwrite",
-      fetchPolicy: "no-cache"
-    }).valueChanges
-      .subscribe(({data})=>{
-        console.log('Graql data');
-        console.log(data.allDesignations);
-        this.designations = data.allDesignations;
-      },
-        error => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error in fetching the data.'
-          })
-        });
+    this.allDesignationsQuery = this.allDesignationsGQL.watch();
+    this.allDesignationsQuery.valueChanges
+      .subscribe((data)=>{
+        console.log('in the graphql data');
+        console.log(data);
+        this.designations = data.data.designations;
+      });
+    this.allDesignationsQuery.refetch();
   }
 
   deleteDesignation(id: string){
@@ -72,7 +62,7 @@ export class DesignationComponent implements OnInit {
       complete: ()=>{
         console.log('designation deleted');
       },
-      next: ()=> this.fetchAllDesignations(),
+      next: ()=> this.allDesignationsQuery.refetch(),
       error: ()=> {
         this.messageService.add({
           severity: 'error',

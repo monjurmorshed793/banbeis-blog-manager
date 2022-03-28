@@ -69,7 +69,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BanbeisSharedServicesModule.forRoot(environment.apiUrl),
     ToolbarModule,
     ButtonModule,
-    ApolloModule,
+    // ApolloModule,
     TranslateModule.forRoot({
       defaultLanguage: 'bn',
       loader: {
@@ -91,18 +91,19 @@ function initializeKeycloak(keycloak: KeycloakService) {
     multi: true,
     deps: [KeycloakService]
   }, MessageService,
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: (httpLink: HttpLink)=>{
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: 'http://localhost:8081/graphql'
-          })
-        }
-      },
-      deps: [HttpLink]
-    }],
+    // {
+    //   provide: APOLLO_OPTIONS,
+    //   useFactory: (httpLink: HttpLink)=>{
+    //     return {
+    //       cache: new InMemoryCache(),
+    //       link: httpLink.create({
+    //         uri: 'http://localhost:8081/graphql'
+    //       })
+    //     }
+    //   },
+    //   deps: [HttpLink]
+    // }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
