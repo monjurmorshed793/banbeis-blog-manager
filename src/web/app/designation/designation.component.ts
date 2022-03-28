@@ -2,6 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import {DesignationService} from "banbeis-shared-services";
 import {IDesignation} from "banbeis-shared-services/lib/models/designation";
 import {MenuItem, MessageService} from "primeng/api";
+import {Apollo, gql} from "apollo-angular";
+import {Subscription} from "rxjs";
+
+const GET_DESIGNATIONS = gql`
+    query allDesignations{
+      allDesignations{
+        id
+        name
+        shortName
+        grade
+        bn{
+          name
+          shortName
+        }
+      }
+    }
+`;
 
 @Component({
   selector: 'app-designation',
@@ -12,9 +29,11 @@ export class DesignationComponent implements OnInit {
 
   breadcrumbItems: MenuItem[] = [];
   designations!: IDesignation[];
+  private querySubscription!: Subscription;
 
   constructor(private designationService: DesignationService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              private apollo: Apollo) { }
 
   ngOnInit(): void {
 
@@ -23,7 +42,17 @@ export class DesignationComponent implements OnInit {
     ];
 
     this.fetchAllDesignations();
+
+     this.apollo.watchQuery<any>({
+      query: GET_DESIGNATIONS
+    }).valueChanges
+      .subscribe(({data})=>{
+        console.log('Graql data');
+        console.log(data.allDesignations);
+      });
   }
+
+
 
   fetchAllDesignations(){
     this.designationService.getAll().subscribe((res)=>{

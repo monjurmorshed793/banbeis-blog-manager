@@ -21,6 +21,9 @@ import {ButtonModule} from "primeng/button";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {InputTextModule} from "primeng/inputtext";
+import {APOLLO_OPTIONS, ApolloModule} from "apollo-angular";
+import {InMemoryCache} from "@apollo/client/core";
+import {HttpLink} from "apollo-angular/http";
 
 
 // AoT requires an exported function for factories
@@ -66,6 +69,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BanbeisSharedServicesModule.forRoot(environment.apiUrl),
     ToolbarModule,
     ButtonModule,
+    ApolloModule,
     TranslateModule.forRoot({
       defaultLanguage: 'bn',
       loader: {
@@ -86,7 +90,19 @@ function initializeKeycloak(keycloak: KeycloakService) {
     useFactory: initializeKeycloak,
     multi: true,
     deps: [KeycloakService]
-  }, MessageService],
+  }, MessageService,
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink)=>{
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: 'http://localhost:8081/graphql'
+          })
+        }
+      },
+      deps: [HttpLink]
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
