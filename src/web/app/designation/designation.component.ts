@@ -43,28 +43,28 @@ export class DesignationComponent implements OnInit {
 
     this.fetchAllDesignations();
 
-     this.apollo.watchQuery<any>({
-      query: GET_DESIGNATIONS
+
+  }
+
+
+  fetchAllDesignations(){
+    this.apollo.watchQuery<any>({
+      query: GET_DESIGNATIONS,
+      refetchWritePolicy: "overwrite",
+      fetchPolicy: "no-cache"
     }).valueChanges
       .subscribe(({data})=>{
         console.log('Graql data');
         console.log(data.allDesignations);
-      });
-  }
-
-
-
-  fetchAllDesignations(){
-    this.designationService.getAll().subscribe((res)=>{
-        this.designations = res.body!;
+        this.designations = data.allDesignations;
       },
-      error => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error in fetching the data.'
-        })
-      });
+        error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error in fetching the data.'
+          })
+        });
   }
 
   deleteDesignation(id: string){
