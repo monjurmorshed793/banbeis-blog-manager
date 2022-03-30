@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DesignationService, AllDesignationsGQL, AllDesignationResponse} from "banbeis-shared-services";
+import {DesignationService, AllDesignationsGqlService, AllDesignationResponse} from "banbeis-shared-services";
 import {IDesignation} from "banbeis-shared-services/lib/models/designation";
 import {MenuItem, MessageService} from "primeng/api";
 // import {Apollo, gql} from "apollo-angular";
@@ -34,7 +34,7 @@ export class DesignationComponent implements OnInit {
 
   constructor(private designationService: DesignationService,
               private messageService: MessageService,
-              private allDesignationsGQL: AllDesignationsGQL) { }
+              private allDesignationsGQL: AllDesignationsGqlService) { }
 
   ngOnInit(): void {
 
