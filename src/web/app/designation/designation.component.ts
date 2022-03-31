@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DesignationService, AllDesignationsGqlService, AllDesignationResponse} from "banbeis-shared-services";
+import {DesignationService, AllDesignationResponse} from "banbeis-shared-services";
 import {IDesignation} from "banbeis-shared-services/lib/models/designation";
 import {MenuItem, MessageService} from "primeng/api";
 // import {Apollo, gql} from "apollo-angular";
@@ -33,8 +33,7 @@ export class DesignationComponent implements OnInit {
   private allDesignationsQuery!: QueryRef<AllDesignationResponse>;
 
   constructor(private designationService: DesignationService,
-              private messageService: MessageService,
-              private allDesignationsGQL: AllDesignationsGqlService) { }
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
 
@@ -47,7 +46,7 @@ export class DesignationComponent implements OnInit {
   }
 
   fetchAllDesignations(){
-    this.allDesignationsQuery = this.allDesignationsGQL.watch();
+    this.allDesignationsQuery = this.designationService.getAllDesignations();
     this.allDesignationsQuery.options.fetchPolicy = "no-cache";
     this.allDesignationsQuery.valueChanges
       .subscribe((data)=>{
@@ -59,7 +58,11 @@ export class DesignationComponent implements OnInit {
   }
 
   deleteDesignation(id: string){
-    this.designationService.delete(id).subscribe({
+    const deleteDesignationByIdQuery = this.designationService.deleteDesignation(id);
+    deleteDesignationByIdQuery.subscribe((response)=>{
+      this.allDesignationsQuery.refetch();
+    });
+/*    this.designationService.delete(id).subscribe({
       complete: ()=>{
         console.log('designation deleted');
       },
@@ -71,7 +74,7 @@ export class DesignationComponent implements OnInit {
           detail: 'Error in deleting data'
         });
       }
-    })
+    })*/
   }
 
 }

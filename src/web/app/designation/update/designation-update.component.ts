@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DesignationService, INavigation, SaveDesignationGqlService, UpdateDesignationGQLService, DesignationByIdService} from "banbeis-shared-services";
+import {DesignationService} from "banbeis-shared-services";
 import {MenuItem, MessageService} from "primeng/api";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -30,10 +30,7 @@ export class DesignationUpdateComponent implements OnInit {
   constructor(private designationService: DesignationService,
               private messageService: MessageService,
               private route: ActivatedRoute,
-              private fb: FormBuilder,
-              private saveDesignationService: SaveDesignationGqlService,
-              private updateDesignationService: UpdateDesignationGQLService,
-              private designationByIdService: DesignationByIdService) { }
+              private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.breadcrumbItems = [
@@ -59,7 +56,7 @@ export class DesignationUpdateComponent implements OnInit {
 
   fetchDesignation(designationId: string): void{
     console.log('designation id--->'+designationId);
-    const designationQuery: QueryRef<any> = this.designationByIdService.watch({designationId: designationId});
+    const designationQuery: QueryRef<any> = this.designationService.getDesignationById(designationId);
     designationQuery.valueChanges
       .subscribe((response)=>{
         this.designation = response.data.designation;
@@ -88,15 +85,8 @@ export class DesignationUpdateComponent implements OnInit {
       this.disableSaveButton = true;
       const designation: IDesignation = {...this.designation, ...this.designationForm.value};
       if(designation.id){
-        this.updateDesignationService
-          .mutate({
-            id: designation.id,
-            name: designation.name,
-            shortName: designation.shortName,
-            grade: designation.grade,
-            bnName: designation.bn.name,
-            bnShortName: designation.bn.shortName
-          }).subscribe({
+        const updateQuery = this.designationService.updateDesignation(designation);
+        updateQuery.subscribe({
           next: ()=> this.onSaveComplete(),
           error: ()=> {
             this.disableSaveButton = false;
@@ -108,26 +98,18 @@ export class DesignationUpdateComponent implements OnInit {
           }
         })
       }else{
-        console.log('saving data (not updating)');
-        console.log(designation);
-        this.saveDesignationService
-          .mutate({
-            name: designation.name,
-            shortName: designation.shortName,
-            grade: designation.grade,
-            bnName: designation.bn.name,
-            bnShortName: designation.bn.shortName
-          }).subscribe({
-          next: ()=> this.onSaveComplete(),
-          error: ()=> {
+        const saveDesignationQuery = this.designationService.createDesignation(designation);
+        saveDesignationQuery.subscribe((response)=>{
+          this.onSaveComplete();
+        },
+          error=>{
             this.disableSaveButton = false;
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
               detail: 'Error in saving the data'
             });
-          }
-        })
+          });
       }
     }else{
       this.messageService.add({
