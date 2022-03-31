@@ -48,13 +48,14 @@ export class DesignationComponent implements OnInit {
 
   fetchAllDesignations(){
     this.allDesignationsQuery = this.allDesignationsGQL.watch();
+    this.allDesignationsQuery.options.fetchPolicy = "no-cache";
     this.allDesignationsQuery.valueChanges
       .subscribe((data)=>{
         console.log('in the graphql data');
         console.log(data);
         this.designations = data.data.designations;
       });
-    this.allDesignationsQuery.refetch();
+    // this.allDesignationsQuery.refetch();
   }
 
   deleteDesignation(id: string){

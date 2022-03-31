@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {DesignationService, INavigation, SaveDesignationGqlService, UpdateDesignationGQLService} from "banbeis-shared-services";
+import {DesignationService, INavigation, SaveDesignationGqlService, UpdateDesignationGQLService, DesignationByIdService} from "banbeis-shared-services";
 import {MenuItem, MessageService} from "primeng/api";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {IDesignation} from "banbeis-shared-services/lib/models/designation";
+import {QueryRef} from "apollo-angular";
 
 @Component({
   selector: 'app-designation-update',
@@ -31,7 +32,8 @@ export class DesignationUpdateComponent implements OnInit {
               private route: ActivatedRoute,
               private fb: FormBuilder,
               private saveDesignationService: SaveDesignationGqlService,
-              private updateDesignationService: UpdateDesignationGQLService) { }
+              private updateDesignationService: UpdateDesignationGQLService,
+              private designationByIdService: DesignationByIdService) { }
 
   ngOnInit(): void {
     this.breadcrumbItems = [
@@ -56,17 +58,15 @@ export class DesignationUpdateComponent implements OnInit {
   }
 
   fetchDesignation(designationId: string): void{
-    this.designationService.find(designationId).subscribe((res)=>{
-      this.designation = res.body!;
-      this.convertToFormGroup(this.designation);
-    },
-      (error => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error in fetching designation data'
-        });
-      }));
+    console.log('designation id--->'+designationId);
+    const designationQuery: QueryRef<any> = this.designationByIdService.watch({designationId: designationId});
+    designationQuery.valueChanges
+      .subscribe((response)=>{
+        this.designation = response.data.designation;
+        console.log(response);
+        this.convertToFormGroup(this.designation);
+      });
+    designationQuery.refetch();
   }
 
   convertToFormGroup(designation: IDesignation): void{
