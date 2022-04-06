@@ -1,32 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DesignationService, AllDesignationResponse} from "banbeis-shared-services";
 import {IDesignation} from "banbeis-shared-services/lib/models/designation";
 import {MenuItem, MessageService} from "primeng/api";
-// import {Apollo, gql} from "apollo-angular";
-import {map, Subscription} from "rxjs";
 import {QueryRef} from "apollo-angular";
 
-// const GET_DESIGNATIONS = gql`
-//     query allDesignations{
-//       allDesignations{
-//         id
-//         name
-//         shortName
-//         grade
-//         bn{
-//           name
-//           shortName
-//         }
-//       }
-//     }
-// `;
 
 @Component({
   selector: 'app-designation',
   templateUrl: './designation.component.html',
   styleUrls: ['./designation.component.sass']
 })
-export class DesignationComponent implements OnInit {
+export class DesignationComponent implements OnInit, OnDestroy {
 
   breadcrumbItems: MenuItem[] = [];
   designations!: IDesignation[];
@@ -62,19 +46,10 @@ export class DesignationComponent implements OnInit {
     deleteDesignationByIdQuery.subscribe((response)=>{
       this.allDesignationsQuery.refetch();
     });
-/*    this.designationService.delete(id).subscribe({
-      complete: ()=>{
-        console.log('designation deleted');
-      },
-      next: ()=> this.allDesignationsQuery.refetch(),
-      error: ()=> {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error in deleting data'
-        });
-      }
-    })*/
   }
+
+  ngOnDestroy(): void {
+  }
+
 
 }

@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: ()=> import('./designation/designation.module').then(m=> m.DesignationModule)
   },
   {
+    path:'division',
+    loadChildren: ()=> import('./division/division.module').then(m=> m.DivisionModule)
+  },
+  {
     path: '**',
     redirectTo: 'dashboard'
   },
