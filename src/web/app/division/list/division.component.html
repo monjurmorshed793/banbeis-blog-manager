@@ -1,6 +1,4 @@
-<p-breadcrumb [model]="breadcumbItems"></p-breadcrumb>
-<p-toast position="top-center"></p-toast>
-
+<app-common-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-common-breadcrumb>
 <p-card>
   <div class="grid">
     <div class="col-12">
@@ -12,13 +10,14 @@
       </p-toolbar>
     </div>
     <div class="col-12">
-      <p-table responsiveLayout="scroll" [value]="divisions" dataKey="divisionId">
+      <p-table responsiveLayout="scroll" [value]="entities" dataKey="divisionId">
         <ng-template pTemplate="header">
           <tr>
             <th></th>
             <th>Name</th>
             <th>Bangla Name</th>
             <th>URL</th>
+            <th></th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-division let-index="rowIndex">
@@ -27,6 +26,10 @@
             <td>{{division.name.english}}</td>
             <td>{{division.name.bangla}}</td>
             <td>{{division.url}}</td>
+            <td>
+              <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" [routerLink]="['/division/edit']" [queryParams]="{id: division.divisionId}"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="delete(division.id)"></button>
+            </td>
           </tr>
         </ng-template>
       </p-table>

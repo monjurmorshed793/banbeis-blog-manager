@@ -14,6 +14,7 @@ import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
+import {BlogCommonModule} from "../common/blog-common.module";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {ButtonModule} from "primeng/button";
     InputTextModule,
     FormsModule,
     ReactiveFormsModule,
-    ButtonModule
+    ButtonModule,
+    BlogCommonModule
   ]
 })
 export class DivisionModule { }

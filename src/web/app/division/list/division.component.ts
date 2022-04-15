@@ -1,35 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import {DivisionService, IDivision} from 'banbeis-shared-services';
 import {MenuItem, MessageService} from "primeng/api";
+import {ListComponentImpl} from "../../common/ListComponentImpl";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-division',
   templateUrl: './division.component.html',
   styleUrls: ['./division.component.scss']
 })
-export class DivisionComponent implements OnInit {
+export class DivisionComponent extends ListComponentImpl implements OnInit {
 
-  breadcumbItems: MenuItem[] = [];
-  divisions!:IDivision[];
 
-  constructor(private divisionService: DivisionService,
-              private messageService: MessageService) { }
+  constructor(protected override messageService: MessageService,
+              protected override router: Router,
+              protected divisionService: DivisionService) {
+    super(messageService, router, divisionService);
+  }
 
   ngOnInit(): void {
-    this.breadcumbItems = [
+    this.breadcrumbItems = [
       {label: 'Division', routerLink: ['/division']}
     ];
 
-    this.divisionService.getAll().subscribe((resposne)=>{
-      this.divisions = resposne.body!;
-    },
-      (error => {
-        this.messageService.add({
-          severity:'error',
-          summary: 'Error',
-          detail: 'Error in fetching data'
-        });
-      }));
+    this.fetchAll();
   }
+
 
 }

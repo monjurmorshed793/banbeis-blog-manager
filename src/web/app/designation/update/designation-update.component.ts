@@ -55,7 +55,6 @@ export class DesignationUpdateComponent implements OnInit {
   }
 
   fetchDesignation(designationId: string): void{
-    console.log('designation id--->'+designationId);
     const designationQuery: QueryRef<any> = this.designationService.getDesignationById(designationId);
     designationQuery.valueChanges
       .subscribe((response)=>{
