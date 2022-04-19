@@ -50,8 +50,13 @@ export class UpdateComponentImpl implements UpdateComponent{
   }
 
   save(): void {
+    console.log('in the save');
     if(this.modelForm.valid){
-      const modelFromForm = {...this.model, ...this.modelForm};
+      console.log('the form is valid');
+      this.model = {};
+      const modelFromForm = {...this.model, ...this.modelForm.value};
+      console.log(this.model);
+      console.log(modelFromForm);
       this.componentService.save(modelFromForm)
         .subscribe({
           next:()=> this.onSaveComplete(),

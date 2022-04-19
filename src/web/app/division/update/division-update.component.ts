@@ -39,7 +39,8 @@ export class DivisionUpdateComponent extends UpdateComponentImpl implements OnIn
       if(divisionId){
         this.breadCrumbItems.push({
           label: 'Edit Division',
-          routerLink: '/division/edit/'+divisionId
+          routerLink: '/division/edit',
+          queryParams: {id: divisionId}
         });
         this.fetchById(divisionId);
       }else{
@@ -64,5 +65,7 @@ export class DivisionUpdateComponent extends UpdateComponentImpl implements OnIn
       url: division.url
     })
   }
+
+
 
 }

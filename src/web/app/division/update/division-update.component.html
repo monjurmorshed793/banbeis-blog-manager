@@ -1,1 +1,54 @@
-<p>division-update works!</p>
+<app-common-breadcrumb [breadcrumbItems]="breadCrumbItems"></app-common-breadcrumb>
+<p-card>
+  <div class="grid">
+    <form [formGroup]="modelForm" class="col-12">
+      <div class="card flex flex-column">
+        <div class="grid">
+          <div class="field col-12 md:col-2 md:text-right">
+            <label>Name</label>
+          </div>
+          <div class="field col-12 md:col-10 lg:col-5" formGroupName="name">
+            <input formControlName="english" class="w-full" pInputText type="text">
+            <small *ngIf="(modelForm.get('name')!.get('english')!.dirty
+        || modelForm.get('name')!.get('english')!.touched)
+        && modelForm.get('name')!.get('english')!.errors?.['required']" class="p-error block">The field is required</small>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="field col-12 md:col-2 md:text-right">
+            <label>নাম</label>
+          </div>
+          <div class="field col-12 md:col-10 lg:col-5" formGroupName="name">
+            <input formControlName="bangla" class="w-full" pInputText type="text">
+            <small *ngIf="(modelForm.get('name')!.get('bangla')!.dirty
+        || modelForm.get('name')!.get('bangla')!.touched)
+        && modelForm.get('name')!.get('bangla')!.errors?.['required']" class="p-error block">The field is required</small>
+          </div>
+
+        </div>
+
+        <div class="grid">
+          <div class="field col-12 md:col-2 md:text-right">
+            <label>Url</label>
+          </div>
+          <div class="field col-12 md:col-10 lg:col-5">
+            <input formControlName="url" class="w-full" pInputText type="text">
+            <small *ngIf="(modelForm.get('url')!.dirty
+        || modelForm.get('url')!.touched)
+        && modelForm.get('url')!.errors?.['required']" class="p-error block">The field is required</small>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="col-12">
+      <p-toolbar>
+        <div class="p-toolbar-group-left"></div>
+        <div class="p-toolbar-group-right">
+          <button pButton pRipple icon="pi pi-check" label="Save" (click)="save()" ></button>
+          <button pButton pRipple label="Back" icon="pi pi-arrow-left" class="p-button-danger ml-2" (click)="back()"></button>
+        </div>
+      </p-toolbar>
+    </div>
+  </div>
+</p-card>

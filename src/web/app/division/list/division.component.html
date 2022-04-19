@@ -6,6 +6,7 @@
         <ng-template pTemplate="left"></ng-template>
         <ng-template pTemplate="right">
           <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"></button>
+          <button (click)="downloadPdf()" pButton pRipple label="Download" icon="pi pi-download" class="p-button-success mr-2" *ngIf="entities.length>0"></button>
         </ng-template>
       </p-toolbar>
     </div>
@@ -28,7 +29,7 @@
             <td>{{division.url}}</td>
             <td>
               <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" [routerLink]="['/division/edit']" [queryParams]="{id: division.divisionId}"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="delete(division.id)"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" [disabled]="true" class="p-button-rounded p-button-danger" (click)="delete(division.id)"></button>
             </td>
           </tr>
         </ng-template>

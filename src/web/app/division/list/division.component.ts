@@ -26,5 +26,8 @@ export class DivisionComponent extends ListComponentImpl implements OnInit {
     this.fetchAll();
   }
 
+  downloadPdf(): void{
+    this.divisionService.generateReport();
+  }
 
 }
