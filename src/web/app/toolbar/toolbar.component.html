@@ -1,10 +1,17 @@
-<mat-toolbar color="primary" >
+<mat-toolbar color="primary" fxFlex="row" >
+  <div fxFlex="row">
+    <button mat-button  (click)="toggleSidenav.emit()">
+      <mat-icon>menu</mat-icon>
+    </button>
 
-  <button mat-button  (click)="toggleSidenav.emit()">
-    <mat-icon>menu</mat-icon>
-  </button>
+    <span>Blog Manager</span>
+  </div>
+  <div fxFlex="row" fxLayoutAlign="end">
+    <button mat-button (click)="gotoProfile()">Profile</button>
+    <button mat-button (click)="logout()">Logout</button>
+  </div>
 
-  <span>Blog Manager</span>
+
 </mat-toolbar>
 <!--
 <p-toolbar styleClass="bg-indigo-700 p-4 w-full fixed">
@@ -13,7 +20,8 @@
     <i class="pi pi-bars bg-white" style="cursor: pointer" (click)="toggleSidenav.emit()" ></i>
   </div>
   <div class="p-toolbar-group-right">
-
+    <p-button>Profile</p-button>
+    <p-button>Logout</p-button>
   </div>
 </p-toolbar>
 -->

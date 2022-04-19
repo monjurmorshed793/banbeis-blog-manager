@@ -20,6 +20,10 @@ const routes: Routes = [
     loadChildren: ()=> import('./division/division.module').then(m=> m.DivisionModule)
   },
   {
+    path:'user-management',
+    loadChildren: ()=> import('./user-management/user-management.module').then(m=> m.UserManagementModule)
+  },
+  {
     path: '**',
     redirectTo: 'dashboard'
   },
