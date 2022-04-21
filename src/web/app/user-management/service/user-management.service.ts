@@ -12,6 +12,11 @@ export class UserManagementService {
 
   getUserCount(): Observable<any>{
     return this.httpClient
-      .get(environment.keycloakUrl+'/auth/admin/banbeis-blog/users', {observe: "response"});
+      .get(environment.apiUrl+'/api/shared/user/total-user', {observe: "response"});
+  }
+
+  getAllUsers(): Observable<any>{
+    return this.httpClient
+      .get(environment.apiUrl+'/api/shared/user/all', {observe: "response"});
   }
 }

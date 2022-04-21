@@ -14,6 +14,10 @@ export class UserManagementComponent implements OnInit {
     this.userManagementService.getUserCount().subscribe((res)=>{
       console.log(res);
     });
+
+    this.userManagementService.getAllUsers().subscribe((res)=>{
+      console.log(res.body);
+    });
   }
 
 }
